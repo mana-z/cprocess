@@ -6,16 +6,9 @@
 #include <stdlib.h>
 
 
-int process_run(char* const cmd[])
+int process_run(char* const cmd[], const bool cleanEnv)
 {
-  if (0 == cmd) { return -1; }
-  if (0 == *cmd) { return -1; }
-  pid_t pid = fork();
-  if (pid < 0) { return pid; } // error
-  else if (0 == pid) {
-    clearenv();
-    execv(cmd[0], cmd);
-  }
+  pid_t pid = process_spawn(cmd, cleanEnv);
   int wstatus = 0;
   waitpid(pid, &wstatus, 0);
   if (WIFEXITED(wstatus) > 0) {
@@ -24,6 +17,30 @@ int process_run(char* const cmd[])
   return -1;
 }
 
+pid_t process_spawn(char* const cmd[], const bool cleanEnv)
+{
+  if (0 == cmd) { return -1; }
+  if (0 == *cmd) { return -1; }
+  pid_t pid = fork();
+   if (0 == pid) {
+    if (true == cleanEnv) { clearenv(); }
+    execv(cmd[0], cmd);
+  }
+  return pid;
+}
+
+pid_t process_spawn4(char* const cmd[], const bool cleanEnv,
+    int* stdinPipe, int* stdoutPipe)
+{
+  // TODO
+  int stdinBackup = 0;
+  int stdinfd[2] = { 0 };
+  int stdoutBackup = 0;
+  int stdoutfd[2] = { 0 };
+  if (0 != stdinPipe) {
+    stdinBackup = dup(STDIN_FILENO);
+  }
+}
 
 /* inspiration for spawn:
 int main(int argc, char** argv)
