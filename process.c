@@ -32,32 +32,32 @@ pid_t process_spawn(char* const cmd[], const bool cleanEnv,
   if (0 != stdoutPipe) {
     if (-1 == pipe(stdoutfd)) {
       if (0 != stdoutPipe) { close(stdinfd[0]); close(stdinfd[1]); }
-        return -1;
-      }
+      return -1;
+    }
   }
   pid_t pid = fork();
   if (0 == pid)
   {
     if (0 != stdinPipe) {
-        if (-1 == dup2(stdinfd[0], 0)) { exit(errno); }
-        close(stdinfd[0]);
-        close(stdinfd[1]);
+      if (-1 == dup2(stdinfd[0], 0)) { exit(errno); }
+      close(stdinfd[0]);
+      close(stdinfd[1]);
     }
     if (0 != stdoutPipe) {
-        if (-1 == dup2(stdoutfd[1], 1)) { exit(errno); }
-        close(stdoutfd[0]);
-        close(stdoutfd[1]);
+      if (-1 == dup2(stdoutfd[1], 1)) { exit(errno); }
+      close(stdoutfd[0]);
+      close(stdoutfd[1]);
     }
     if (true == cleanEnv) { clearenv(); }
     execv(cmd[0], cmd);
   }
   if (0 != stdinPipe) {
-      close(stdinfd[0]);
-      *stdinPipe = stdinfd[1];
+    close(stdinfd[0]);
+    *stdinPipe = stdinfd[1];
   }
   if (0 != stdoutPipe) {
-      close(stdoutfd[1]);
-      *stdoutPipe = stdoutfd[0];
+    close(stdoutfd[1]);
+    *stdoutPipe = stdoutfd[0];
   }
   return pid;
 }
