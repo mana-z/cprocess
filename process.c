@@ -35,6 +35,7 @@ pid_t process_spawn(char* const cmd[], const bool cleanEnv,
       return -1;
     }
   }
+
   pid_t pid = fork();
   if (0 == pid)
   {
@@ -51,14 +52,18 @@ pid_t process_spawn(char* const cmd[], const bool cleanEnv,
     if (true == cleanEnv) { clearenv(); }
     execv(cmd[0], cmd);
   }
+
   if (0 != stdinPipe) {
     close(stdinfd[0]);
-    *stdinPipe = stdinfd[1];
+    if (pid > 0) { *stdinPipe = stdinfd[1]; }
+    else { close(stdinfd[1]); }
   }
   if (0 != stdoutPipe) {
     close(stdoutfd[1]);
-    *stdoutPipe = stdoutfd[0];
+    if (pid > 0) { *stdoutPipe = stdoutfd[0]; }
+    else { close(stdoutfd[0]); }
   }
+
   return pid;
 }
 
