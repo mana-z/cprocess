@@ -1,3 +1,6 @@
+/*!*****************************************************************************
+ * The following file is available under CC0 license. See COPYING for details.
+ ******************************************************************************/
 
 #include "process.h"
 #include <unistd.h>
@@ -6,10 +9,13 @@
 #include <stdlib.h>
 #include <errno.h>
 
-
+/*!*****************************************************************************
+ * @see [process.h]
+ ******************************************************************************/
 int process_run(char* const cmd[], const bool cleanEnv)
 {
   pid_t pid = process_spawn(cmd, cleanEnv, 0, 0);
+  if (pid < 0) { return pid; }
   int wstatus = 0;
   waitpid(pid, &wstatus, 0);
   if (WIFEXITED(wstatus) > 0) {
@@ -18,6 +24,9 @@ int process_run(char* const cmd[], const bool cleanEnv)
   return -1;
 }
 
+/*!*****************************************************************************
+ * @see [process.h]
+ ******************************************************************************/
 pid_t process_spawn(char* const cmd[], const bool cleanEnv,
     int* stdinPipe, int* stdoutPipe)
 {
@@ -27,7 +36,7 @@ pid_t process_spawn(char* const cmd[], const bool cleanEnv,
   int stdinfd[2] = { 0 };
   int stdoutfd[2] = { 0 };
   if (0 != stdinPipe) {
-    if (-1 == pipe(stdinfd)) { return -1; }
+    if (-1 == pipe(stdinfd)) { return -2; }
   }
   if (0 != stdoutPipe) {
     if (-1 == pipe(stdoutfd)) {
