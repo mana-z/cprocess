@@ -9,6 +9,8 @@
 #include <stdlib.h>
 #include <errno.h>
 
+extern char** environ;
+
 /*!*****************************************************************************
  * @see [process.h]
  ******************************************************************************/
@@ -58,7 +60,7 @@ pid_t process_spawn(char* const cmd[], const bool cleanEnv,
             close(stdoutfd[0]);
             close(stdoutfd[1]);
         }
-        if (true == cleanEnv) { clearenv(); }
+        if (true == cleanEnv) { environ = 0; }
         execv(cmd[0], cmd);
     }
 

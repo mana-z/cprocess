@@ -8,7 +8,7 @@
 #include <stdbool.h>
 
 /*!*****************************************************************************
- * @brief Sequentially run command
+ * @brief Synchronously run command
  * @param[in] cmd see process_spawn
  * @param[in] cleanEnv see process_spawn
  * @return Return value of process
