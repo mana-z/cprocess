@@ -1,6 +1,6 @@
 # cprocess
 
-An convenience wrapper around POSIX process creation API.
+A convenience wrapper around POSIX process creation API.
 
 ## Why?
 
@@ -32,7 +32,7 @@ any form of asynchronous work with the subprocess. The `popen()` call helps this
 `FILE*` access to the process. This, however, only allows an uni-directional communication and does
 not help with other bad traits of `system()`.
 
-In both cases there are even some security implications about which you may read in man of
+In both cases there are even some security implications about which you may read about in man of
 `system()`. This makes them non-ideal in terms of performance, flexibility and security.
 
 ## And what is wrong with using `fork()+exec()` directly?
@@ -81,14 +81,15 @@ The remaining parameters are for IO redirection as shown here:
 
 int stdinPipe = 0;
 int stdoutPipe = 0;
-pid_t pid = proces_spawn((char* const[]){ "/my/binary", "arg1", "arg2", ..., 0 }, false, &stdinPipe, &stdoutPipe);
+pid_t pid = proces_spawn((char* const[]){ "/my/binary", "arg1", "arg2", ..., 0 }, false,
+    &stdinPipe, &stdoutPipe);
 ```
 
 You can then use the received file descriptiors using POSIX `read()` and `write()` calls. And don't
 forget to `close()` the descriptors after use!
 
 You may use none, one of, or both pipes. Just pass the pointer if you want it or null if you don't.
-If you dont use them, the subprocess will share stdin and stdout with the parent process.
+If you dont use them, the subprocess will share stdin and/or stdout with the parent process.
 
 
 ## Ok, why, again, bother with subprocesses in general?
@@ -107,10 +108,10 @@ is a few:
 Sure! Just remember you still have to interface pipes using POSIX IO functions (`read()`, `write()`,
 ...).
 
-## Can I use it in _insert other language_?
+## Can I use it in [insert other language]?
 
 Probably, but make sure your language does not have subprocess handling in it's standard library. It
-will most probably have a much better one.
+will most probably have a much better one already.
 
 ## License
 
