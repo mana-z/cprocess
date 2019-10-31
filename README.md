@@ -10,6 +10,17 @@ functions, with one of it being just for extra convenience) tries to offer an al
 same convenience of `system()` and `popen()` yet having the strength and flexibility of
 `fork()+exec()`.  
 
+## Why bother with subprocesses in general?
+
+There are many reasons why use subprocesses, even when they are getting bit forgotten nowadays, here
+a few examples:
+- You may reuse lots of tools in environment
+    - this is particulary strong in Linux world as there are solutions for lots of problems through
+      simple CLI tools
+    - You may minimize reinventing the wheel, which is a super-common pattern in C and C++ world
+- You may easily make your program asynchronous
+    - subprocesses are usually much safer than threads
+
 ## What is wrong with `system()` and `popen()`?
 
 These methods are spawning a subshell, so, in fact, when you do this:
