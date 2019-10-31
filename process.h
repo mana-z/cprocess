@@ -18,7 +18,7 @@ extern int process_run(char* const cmd[], const bool cleanEnv);
 
 
 /*!*****************************************************************************
- * @brief Run command in background
+ * @brief Run command asynchronously
  * @note The first value of cmd array is automatically taken as a command, the
  * whole array is a null terminated argument list.
  * @param[in] cmd Command with arguments. The last value shall be NULL,
@@ -28,7 +28,7 @@ extern int process_run(char* const cmd[], const bool cleanEnv);
  * @return PID of the child
  * @retval -1 Error happened, errno may give more information
  ******************************************************************************/
-extern pid_t process_spawn(char* const cmd[], const bool cleanEnv,
-    int* stdinPipe, int* stdoutPipe);
+extern pid_t process_spawn(char* const cmd[], const bool cleanEnv, int* stdinPipe, int* stdoutPipe);
 
 #endif // __PROCESS_H__
+
