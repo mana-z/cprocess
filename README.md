@@ -38,7 +38,7 @@ In both cases there are even some security implications about which you may read
 ## And what is wrong with using `fork()+exec()` directly?
 
 Nothing in essence. However, their handling takes some care and mistakes done using them are pretty
-common, especially when IO redirection is needed. Many developers are prone to avoid then for that
+common, especially when IO redirection is needed. Many developers are prone to avoid them for that
 reasons.
 
 ## What I need?
@@ -89,7 +89,7 @@ You can then use the received file descriptiors using POSIX `read()` and `write(
 forget to `close()` the descriptors after use!
 
 You may use none, one of, or both pipes. Just pass the pointer if you want it or null if you don't.
-If you dont use them, the subprocess will share stdin and/or stdout with the parent process.
+If you don't use them, the subprocess will share stdin and/or stdout with the parent process.
 
 
 ## Ok, why, again, bother with subprocesses in general?
